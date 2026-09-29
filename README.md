@@ -1,135 +1,86 @@
-# Lumi6
+# Atlas
 
-Lumi6 is a voice-and-whiteboard companion for kids. A child signs in, tells Lumi6 what they want to understand, and Lumi6 talks, asks thinking questions, and draws on a shared board.
+Atlas is an infinite whiteboard canvas featuring smooth handwriting ink, rich formatting, learner onboarding, user profile management, and board snapshot persistence.
 
-This README is for running and shipping the product. Internal product notes live under `docs/` and are not required to operate the service.
+## Features
 
-## What it does
+- **Infinite Whiteboard Canvas**: Smooth pen strokes, ink colors, eraser, undo/redo, pan and zoom.
+- **Precision Drawing Tools**:
+  - Pen with intuitive vertical size slider rail
+  - Ink well with curated colors and custom color picker
+  - Lasso selection for moving, scaling, and deleting content
+  - Eraser with stroke awareness
+  - Hand tool for canvas panning and moving placed objects
+  - Text tool supporting Markdown and LaTeX formatting
+  - Image/photo placement with place, merge, and transform options
+- **User Onboarding & Profile**:
+  - 3-step onboarding flow collecting learner details (name, class/grade, interests)
+  - User profile modal for reviewing and updating learner information
+  - Supabase authentication integration for seamless cloud profile persistence with local storage fallback
+- **Board Persistence & Sharing**:
+  - Save and restore board snapshots locally or on the server
+  - Export canvas as PNG
+  - Share modal for links and export options
+- **Clean Apple-inspired UI**: Minimalist, distraction-free aesthetic with system typography and sleek modal interfaces.
 
-- Clean routes: `/login` (auth & sign-in), `/dashboard` (whiteboard & tutor)
-- Short onboarding: name, class, interests
-- **Draw Mode**: Infinite white canvas for interactive notes and diagrams
-- **Talk Mode**: Structured Socratic story view with visual lesson cards, key discovery highlights, and kid-friendly thinking prompts
-- Voice orb plus chat with speech recognition
-- Real-time lesson pictures and visual models when topics evolve
-- Download a kid-readable lesson PDF from the session
+## Project Structure
 
-## Stack
+```
+├── docs/
+│   ├── PRIMER-ORCHESTRATION.md
+│   └── PRIMER-PRD.md
+├── public/
+│   ├── css/
+│   │   ├── app.css           # Bundled canvas stylesheet
+│   │   └── login.css         # Sign-in styling
+│   ├── js/
+│   │   ├── auth/
+│   │   │   ├── onboard.js    # 3-step learner onboarding & profile modal
+│   │   │   └── supabase-auth.js # Supabase client authentication
+│   │   ├── vendor/           # MathJax & vendor helpers
+│   │   └── board.js          # Compiled whiteboard canvas engine
+│   ├── index.html            # Main canvas application shell
+│   └── login.html            # Sign-in page
+├── scripts/
+│   └── build-web.js          # Client bundler for CSS & Board modules
+├── src/
+│   ├── board/                # Modular whiteboard canvas engine
+│   ├── server/               # Lightweight Node static & API server
+│   └── web/css/              # CSS design tokens, shell, and board styles
+├── package.json
+└── server.js
+```
 
-| Piece | Role |
-| --- | --- |
-| Browser app in `public/` & `src/client/` | Clean login, Draw/Talk modes, chat, voice, profile |
-| Node server (`src/server/`) | Serves clean routes `/login`, `/dashboard`, and `/api/*` |
-| Primer AI Tutor (`src/primer/`) | Socratic pedagogical engine, first-principles level-up loop |
-| Groq | Fast spoken replies |
-| OpenAI | Fallback talk, fallback images |
-| Deepgram / Cartesia | Text-to-speech voice synthesis |
-| Wikimedia / OpenAI Images | Lesson pictures and visual diagrams |
-| Supabase | Auth and learner data |
-| AWS ECS | Production Node tasks |
-| CloudFront + ALB | HTTPS in front of ECS |
-| S3 | Generated graphics (production) |
+## Getting Started
 
-The live app is one Node process. CloudFront should sit in front of ECS. Do not put API keys in the browser except the Supabase publishable key.
-
-## Requirements
+### Prerequisites
 
 - Node.js 20.3 or newer
-- Keys for Groq, OpenAI, Deepgram, and at least one image provider
-- A Supabase project with Auth and the SQL in `supabase/sql/`
 
-## Local run
+### Installation & Run
 
 ```bash
-npm install
-cp .env.example .env   # then fill in keys locally; never commit .env
+# Start the local server
 npm start
 ```
 
-Open [http://127.0.0.1:3888](http://127.0.0.1:3888).
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-Production and Docker-style hosts must bind all interfaces:
-
-```bash
-HOST=0.0.0.0 PORT=3888 npm start
-```
-
-Useful scripts:
+### Scripts
 
 | Command | Purpose |
 | --- | --- |
-| `npm start` | Run the app |
-| `npm run build:client` | Rebuild `public/js/canvas/app.js` from `src/client/app` |
-| `npm run check` | Syntax check |
+| `npm start` | Run the Atlas server |
+| `npm run dev` | Run development server |
+| `npm run build` | Recompile client bundles (`public/css/app.css` & `public/js/board.js`) |
+| `npm run check` | Run JavaScript syntax check across all source files |
 
-Live UI work in `public/*.js` and `public/*.css` is served as-is. After changing those files, hard-refresh the browser. After changing `src/` server code, restart Node.
+### Configuration (Optional)
 
-## Environment
+Atlas works out of the box with local storage. To enable Supabase authentication and cloud profile sync, create a `.env` file:
 
-Copy `.env.example`. Names only — never paste real keys into git, chat, or screenshots.
-
-**App**
-
-- `HOST` — `127.0.0.1` locally, `0.0.0.0` on ECS
-- `PORT` — default `3888`
-
-**Talk**
-
-- `GROQ_API_KEY`, `GROQ_MODEL` — first-choice spoken replies
-- `AI_PROVIDER=api`, `AI_API_FORMAT=openai`, `AI_API_URL`, `AI_API_KEY`, `AI_API_MODEL` — OpenAI-compatible fallback
-- `OPENAI_API_KEY`, `OPENAI_MODEL` — same fallback plus image fallback
-
-**Voice**
-
-- `TTS_PROVIDER=deepgram`
-- `DEEPGRAM_API_KEY`, `DEEPGRAM_TTS_MODEL`, `DEEPGRAM_TTS_SPEED`, `DEEPGRAM_TTS_PAUSE_MS`
-
-**Pictures**
-
-- Wikimedia / Wikipedia first, then OpenAI Images via `OPENAI_API_KEY`
-- Optional `OPENAI_IMAGE_MODEL` (defaults to `dall-e-3`, then `dall-e-2`)
-
-**Supabase**
-
-- `SUPABASE_URL` — project URL
-- `SUPABASE_ANON_KEY` — publishable key for the browser (also sent via `/api/config.js`)
-- `SUPABASE_SERVICE_ROLE_KEY` — **ECS only**, never in the frontend, for trusted server writes
-
-## Data
-
-Learner profiles live in `public.users` (owned by `auth.uid()`). Session and turn tables are in `supabase/sql/lumi6_auth_schema.sql`. Apply those scripts (and `supabase/migrations/`) in the Supabase SQL editor before launch.
-
-If the server cannot write to Supabase, it falls back to in-memory storage. That is fine for a laptop. It is not fine in production: a new ECS task forgets the child.
-
-## Production shape
-
+```env
+PORT=3000
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-anon-key
 ```
-Child browser
-    → CloudFront (HTTPS, cache static files)
-    → ALB
-    → ECS tasks (Node, HOST=0.0.0.0)
-         → Groq / OpenAI / Deepgram / Gemini
-         → Supabase Auth + Postgres
-         → S3 (lesson pictures)
-```
-
-Keep ECS, S3, and CloudFront in the same region as the children (for India: ap-south-1). Run at least two ECS tasks so a deploy does not drop the orb.
-
-Pictures generated today are held in process memory. For launch, write them to S3 as they are created so they survive deploys and can be shared later.
-
-## What not to publish
-
-Do not put these in a public README, ticket, or screenshot:
-
-- API keys, service-role keys, JWTs
-- Internal teaching-loop / orchestration notes (`docs/PRIMER-*.md`)
-- Child names, chat transcripts, or board images from real sessions
-
-## Go live
-
-- [docs/DEPLOY.md](docs/DEPLOY.md) — Docker, ECS env vars, GitHub Actions  
-- [docs/GO-LIVE.md](docs/GO-LIVE.md) — launch checklist  
-
-## License
-
-Proprietary. See [LICENSE](LICENSE).

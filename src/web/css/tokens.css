@@ -1,0 +1,38 @@
+/* Shared color, type, and layout tokens. Shell, Talk, and Board CSS consume these. */
+
+:root {
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 72px;
+  --topbar-height: 52px;
+  --sys-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  --bg: #f5f5f7;
+  --surface: #ffffff;
+  --label: #1d1d1f;
+  --secondary: #5c5c62;
+  --tertiary: #86868b;
+  --fill: rgba(120, 120, 128, 0.16);
+  --fill-hover: rgba(120, 120, 128, 0.1);
+  --separator: rgba(60, 60, 67, 0.12);
+  --blue: #6d5cff;
+  --blue-press: #5846e8;
+  --blue-soft: rgba(109, 92, 255, 0.14);
+  --green: #30d158;
+  --red: #ff3b30;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+  --board-soft: rgba(255, 159, 10, 0.16);
+
+  --paper: #ffffff;
+  --ink: var(--label);
+  --ink-soft: var(--secondary);
+  --ink-faint: var(--tertiary);
+
+  --bg-canvas: #ffffff;
+  --bg-panel: #ffffff;
+  --bg-body: #ffffff;
+  --accent: #6d5cff;
+  --kid-ink: #1d1d1f;
+  --kid-bar-bg: rgba(255, 255, 255, 0.92);
+  --kid-bar-border: 1px solid var(--separator);
+  --kid-bar-shadow: var(--shadow);
+}

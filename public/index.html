@@ -3,33 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-  <meta name="theme-color" content="#FAFAF8">
+  <meta name="theme-color" content="#ffffff">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Lumi6</title>
+  <title>Atlas</title>
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="lumi6-mark.png">
   <link rel="apple-touch-icon" href="lumi6-mark.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Patrick+Hand&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260967">
-  <link rel="stylesheet" href="css/primer-voice.css?v=20260967">
-  <link rel="stylesheet" href="css/supabase-auth.css?v=20260904">
-  <link rel="stylesheet" href="css/lumi6-onboard.css?v=20260904">
-  <link rel="stylesheet" href="css/mobile.css?v=20260967">
-  <script src="js/lib/mathjax-config.js"></script>
-  <script
-    defer
-    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"
-    integrity="sha384-KKWa9jJ1MZvssLeOoXG6FiOAZfAgmzsIIfw8BXwI9+kYm0lPCbC6yTQPBC00F1/L"
-    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="css/app.css?v=20260920c">
   <script src="/api/config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+  <script src="js/vendor/mathjax-config.js"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
 </head>
-<body data-theme="studio" class="mode-talk-active">
+<body data-theme="studio" class="mode-draw-active">
   <!-- ═══════════════════════════════════════════ -->
   <!-- APP SHELL                                   -->
   <!-- ═══════════════════════════════════════════ -->
@@ -40,10 +28,10 @@
       <!-- Brand -->
       <div class="sidebar-brand">
         <div class="brand-logo">
-          <img src="lumi6-mark.png" alt="Lumi6">
+          <img src="lumi6-mark.png" alt="Atlas">
         </div>
         <div class="brand-text">
-          <span class="brand-name">Lumi6</span>
+          <span class="brand-name">Atlas</span>
         </div>
         <button id="sidebarCollapseBtn" class="sidebar-collapse-btn" type="button" aria-label="Collapse sidebar" title="Collapse sidebar">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6 9 12l6 6"/></svg>
@@ -53,27 +41,12 @@
       <div class="sidebar-actions">
         <button id="navNewBoard" class="new-board-btn" type="button">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-          <span>New board</span>
+          <span>New Board</span>
         </button>
       </div>
 
-      <nav class="sidebar-nav" aria-label="Main navigation">
-        <button class="nav-item" id="modeDrawBtn" type="button" aria-pressed="false" data-mode="draw">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
-          <span>Draw Mode</span>
-        </button>
-        <button class="nav-item active" id="modeTalkBtn" type="button" aria-pressed="true" data-mode="talk">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="13" y2="13"/></svg>
-          <span>Talk Mode</span>
-        </button>
-        <button class="nav-item" id="modeSimBtn" type="button" aria-pressed="false" data-mode="sim">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-          <span>SIM</span>
-        </button>
-      </nav>
-
       <div class="sidebar-recents" id="sidebarRecents" aria-label="Recent boards">
-        <div class="sidebar-recents-label">Boards</div>
+        <div class="sidebar-recents-label">Recents</div>
         <button type="button" class="sidebar-recent-item current" id="currentBoardItem">New board</button>
       </div>
 
@@ -105,15 +78,8 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
           </button>
           <div class="doc-title-area">
-            <h1 class="doc-title" id="docTitleHeading">Whiteboard</h1>
-            <div class="doc-meta">
-              <span class="doc-name" id="currentDocName">New board</span>
-              <span class="doc-saved-dot" aria-hidden="true">·</span>
-              <span class="doc-saved-status">
-                <svg viewBox="0 0 24 24" class="cloud-icon" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
-                Saved just now
-              </span>
-            </div>
+            <h1 class="doc-title" id="docTitleHeading">Atlas</h1>
+            <span class="doc-name" id="currentDocName" hidden>New board</span>
           </div>
         </div>
 
@@ -169,9 +135,6 @@
                   <button id="textToolBtn" data-mode="text" class="icon-button btool" type="button" aria-pressed="false" aria-label="Text" data-tip="Text">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M12 6v14M8 20h8"/></svg>
                   </button>
-                  <button id="shapeToolBtn" data-mode="shape" class="icon-button btool" type="button" aria-pressed="false" aria-label="Designs" data-tip="Designs">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="7" height="7" rx="1"/><circle cx="16.5" cy="8.5" r="3.5"/><path d="M8 20 4.5 14h7L8 20Z"/></svg>
-                  </button>
                   <button id="imagePickerBtn" class="icon-button btool" type="button" aria-label="Place a photo" data-tip="Photo">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m4 17 5-5 4 4 2-2 5 5"/></svg>
                   </button>
@@ -183,21 +146,9 @@
               </div>
             </div>
           </div>
-          <div id="aiStatusArea" class="topbar-status-area" hidden>
-            <div id="status" role="status" aria-live="polite">Ready</div>
-            <div id="batchActions" class="batch-actions" hidden>
-              <button id="rejectBatch" type="button" aria-label="Discard all AI drafts" title="Discard all AI drafts">
-                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 5.5 14.5 14.5M14.5 5.5 5.5 14.5"/></svg>
-              </button>
-              <button id="acceptBatch" type="button" aria-label="Accept all AI drafts" title="Accept all AI drafts">
-                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4.5 10.3 3.4 3.4 7.8-8"/></svg>
-              </button>
-            </div>
-          </div>
         </div>
 
         <div class="topbar-right">
-          <!-- File Actions -->
           <span class="topbar-actions" id="canvasFileActions">
             <button id="newCanvasBtn" class="topbar-icon-btn" type="button" aria-label="Start a new board" title="Start a new board">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6Z"/><path d="M14 3v4h4M9 14h6M12 11v6"/></svg>
@@ -205,73 +156,29 @@
             <button id="saveCanvasBtn" class="topbar-icon-btn" type="button" aria-label="Save this board" title="Save this board">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h12l2 2v14H5Z"/><path d="M8 4v6h8V4M8 20v-6h8v6"/></svg>
             </button>
-            <button id="exportPngBtn" class="topbar-icon-btn" type="button" aria-label="Download this lesson as a PDF" title="Download this lesson as a PDF">
+            <button id="exportPngBtn" class="topbar-icon-btn" type="button" aria-label="Download board as image" title="Download board as image">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 15v5h14v-5"/></svg>
             </button>
             <button id="historyBtn" class="topbar-icon-btn" type="button" aria-label="Open saved boards" title="Open saved boards" aria-expanded="false" aria-controls="historyPanel">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4Z"/><path d="M8 5V3h8v2M8 10h8M8 14h6"/></svg>
             </button>
           </span>
-          <div class="topbar-divider" aria-hidden="true"></div>
           <span class="topbar-actions topbar-edit-actions">
-          <button id="shareCanvasBtn" class="share-btn" type="button" title="Copy a link to this board">
-            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-            <span>Share</span>
-          </button>
+            <button id="shareCanvasBtn" class="share-btn" type="button" title="Copy a link to this board">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+              <span>Share</span>
+            </button>
           </span>
         </div>
       </header>
 
       <!-- CANVAS WORKSPACE -->
-      <div class="canvas-workspace" hidden>
-        <!-- AI Tools (hidden, kept for JS compatibility) -->
-        <div class="hidden-ai-tools" hidden>
-          <div id="aiToolsSection" class="ai-tools-section" role="group" aria-label="AI tools">
-            <div id="autoControl" class="auto-control">
-              <button id="auto" class="active" type="button" aria-pressed="true" aria-expanded="false" aria-controls="autoDelayPopover" aria-label="Auto AI" title="Auto AI"><span id="autoLabel">Auto (5s)</span></button>
-              <div id="autoDelayPopover" class="auto-delay-popover" hidden>
-                <label for="autoDelayRange"><span>Auto AI delay</span><output id="autoDelayValue" for="autoDelayRange">5 s</output></label>
-                <input id="autoDelayRange" type="range" min="0" max="10" step="0.1" value="5" aria-label="Auto AI delay">
-              </div>
-            </div>
-            <div id="effortControl" class="effort-control" data-effort="medium">
-              <button id="aiEffortButton" class="effort-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="effortPopover" aria-label="Reasoning effort" title="Reasoning effort">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8v8M9 5v14M15 5v14M19 8v8M3 12h18"/></svg>
-                <span id="aiEffortLabel">Reasoning (Medium)</span>
-                <svg class="effort-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 9 5 5 5-5"/></svg>
-              </button>
-              <div id="effortPopover" class="effort-popover" hidden>
-                <div id="effortOptions" role="listbox" aria-label="Reasoning effort">
-                  <button type="button" class="effort-option" role="option" data-effort="config" aria-selected="false"><span data-effort-label>Configured</span></button>
-                  <button type="button" class="effort-option" role="option" data-effort="none" aria-selected="false"><span data-effort-label>None</span></button>
-                  <button type="button" class="effort-option" role="option" data-effort="low" aria-selected="false"><span data-effort-label>Low</span></button>
-                  <button type="button" class="effort-option" role="option" data-effort="medium" aria-selected="false"><span data-effort-label>Medium</span></button>
-                  <button type="button" class="effort-option" role="option" data-effort="high" aria-selected="false"><span data-effort-label>High</span></button>
-                  <button type="button" class="effort-option" role="option" data-effort="max" aria-selected="false"><span data-effort-label>Max</span></button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="color-orb-control" data-color-control="ai">
-            <button type="button" class="color-orb-trigger color-blue" aria-label="AI color" title="AI color" aria-expanded="false"><span aria-hidden="true">AI</span></button>
-            <div class="color-orbit" role="menu" aria-label="AI color" aria-hidden="true">
-              <button type="button" class="orbit-swatch orbit-1 color-blue active" data-ai-color="#2563eb" aria-label="Blue"></button>
-              <button type="button" class="orbit-swatch orbit-2 color-black" data-ai-color="#1f2937" aria-label="Ink black"></button>
-              <button type="button" class="orbit-swatch orbit-3 color-red" data-ai-color="#dc2626" aria-label="Red"></button>
-              <button type="button" class="orbit-swatch orbit-4 color-orange" data-ai-color="#ea580c" aria-label="Orange"></button>
-              <button type="button" class="orbit-swatch orbit-5 color-gold" data-ai-color="#ca8a04" aria-label="Gold"></button>
-              <button type="button" class="orbit-swatch orbit-6 color-green" data-ai-color="#16a34a" aria-label="Green"></button>
-              <button type="button" class="orbit-swatch orbit-7 color-cyan" data-ai-color="#0891b2" aria-label="Cyan"></button>
-              <button type="button" class="orbit-swatch orbit-8 color-purple" data-ai-color="#9333ea" aria-label="Purple"></button>
-            </div>
-          </div>
-        </div>
-
+      <div class="canvas-workspace">
         <!-- THE CANVAS -->
         <section class="canvas-frame">
           <div class="frame-corner corner-left" aria-hidden="true"></div>
           <div class="frame-corner corner-right" aria-hidden="true"></div>
-          <section id="viewport" aria-label="Zoomable handwritten AI canvas">
+          <section id="viewport" aria-label="Zoomable whiteboard canvas">
             <canvas id="screen"></canvas>
             <canvas id="animationLayer" class="animation-layer" aria-hidden="true"></canvas>
             <div id="widgetLayer" class="widget-layer" hidden aria-live="polite"></div>
@@ -301,10 +208,8 @@
             </div>
             <div id="selectionOverlayLayer" class="selection-overlay-layer" hidden>
               <div id="selectionToolbar" class="selection-context-toolbar" role="toolbar" aria-label="Selection tools">
-                <span id="selectionScopeNotice" class="selection-scope-notice">AI answers use only this selection</span>
+                <span id="selectionScopeNotice" class="selection-scope-notice">Selection</span>
                 <span class="selection-toolbar-actions">
-                  <button id="selectionTypesetBtn" class="selection-toolbar-button primary" type="button" aria-label="Typeset selection" title="Turn handwriting into clean typed text or math">Typeset</button>
-                  <button id="selectionVisualizeBtn" class="selection-toolbar-button" type="button" aria-label="Visualize selection" title="Make a picture of what you wrote or drew">Visualize</button>
                   <button id="selectionDeleteBtn" class="selection-toolbar-button danger" type="button" aria-label="Delete selection" title="Delete selection">Delete</button>
                   <button id="selectionCancelBtn" class="selection-toolbar-button" type="button" aria-label="Cancel selection" title="Cancel selection">Cancel</button>
                 </span>
@@ -312,121 +217,15 @@
             </div>
             <div id="textEditorLayer" class="text-editor-layer" aria-live="polite"></div>
             <div id="textInputHint" class="text-input-hint" hidden><kbd>Ctrl/Cmd</kbd> + <kbd>Enter</kbd> <span>to confirm</span></div>
-
-            <!-- AI ORB (centered on canvas) -->
-            <div id="aiEmbodiment" class="ai-embodiment" data-theme="studio" role="group" aria-label="AI knowledge guide" aria-busy="false">
-              <div class="orb-aura" aria-hidden="true"></div>
-              <div class="orb-runes" aria-hidden="true"></div>
-              <span class="orb-particle particle-one" aria-hidden="true"></span>
-              <span class="orb-particle particle-two" aria-hidden="true"></span>
-              <span class="orb-particle particle-three" aria-hidden="true"></span>
-              <button id="aiOrb" class="ai-orb" type="button" aria-label="Talk with the teacher" aria-haspopup="menu" aria-expanded="false">
-                <span class="arcane-crystal" aria-hidden="true"></span>
-                <span class="reactor-core" aria-hidden="true"></span>
-                <svg class="einstein-portrait" viewBox="0 0 80 80" aria-hidden="true"><path class="einstein-hair" d="M18 39C7 33 13 21 22 23 16 13 29 10 34 16 39 7 52 11 54 18 64 12 72 22 65 30 77 35 69 48 61 46L57 34H23Z"/><path class="einstein-face" d="M22 31c0-11 35-12 36 0v15c0 11-7 20-18 20S22 57 22 46Z"/><path class="einstein-eye" d="M28 42h8m8 0h8"/><path class="einstein-moustache" d="M27 51c5-4 10-2 13 2 3-4 8-6 13-2-4 8-10 9-13 5-4 4-10 3-13-5Z"/><path class="einstein-coat" d="M18 76c3-11 11-15 22-15s19 4 22 15Z"/></svg>
-              </button>
-              <div id="aiRadial" class="ai-radial" role="menu" aria-label="AI actions" aria-hidden="true">
-                <button type="button" role="menuitem" class="radial-action radial-answer" data-ai-action="answer" aria-label="Answer">Answer</button>
-                <button type="button" role="menuitem" class="radial-action radial-hint" data-ai-action="hint" aria-label="Hint">Hint</button>
-                <button type="button" role="menuitem" class="radial-action radial-continue" data-ai-action="continue" aria-label="Continue">Continue</button>
-                <button type="button" role="menuitem" class="radial-action radial-explain" data-ai-action="explain" aria-label="Explain">Explain</button>
-                <button type="button" role="menuitem" class="radial-action radial-plot" data-ai-action="plot" aria-label="Plot">Plot</button>
-              </div>
-            </div>
-
-            <div id="primerGraphicLoader" class="primer-graphic-loader" hidden>
-              <div class="lumi-wait lumi-wait-compact" data-lumi-wait="visual">
-                <div class="lumi-wait-stage" aria-hidden="true">
-                  <div class="lumi-wait-fallback"></div>
-                  <div class="lumi-wait-lottie" data-lottie="/assets/lottie/lumi-wait.json"></div>
-                </div>
-                <p class="lumi-wait-title">Putting the picture together</p>
-                <p class="lumi-wait-line">The idea is coming into focus.</p>
-              </div>
-            </div>
           </section>
         </section>
 
+        <!-- PENCIL SIZE HUD -->
         <div class="sketch-hud" id="sketchHud">
           <div class="sketch-size-rail" id="sketchSizeRail" role="slider" tabindex="0" aria-label="Pencil size" aria-valuemin="2" aria-valuemax="16" aria-valuenow="6" aria-orientation="vertical">
             <span class="sketch-size-wedge" aria-hidden="true"></span>
             <span class="sketch-size-knob" id="sketchSizeKnob" aria-hidden="true"></span>
             <input id="penSize" type="range" min="2" max="16" value="6" tabindex="-1" aria-hidden="true">
-          </div>
-
-          <div class="sketch-shape-sheet" id="sketchShapeSheet" hidden>
-            <button type="button" data-shape="line" aria-label="Line" title="Line">
-              <svg viewBox="0 0 24 24"><path d="M5 19 19 5"/></svg>
-            </button>
-            <button type="button" data-shape="arrow" aria-label="Arrow" title="Arrow">
-              <svg viewBox="0 0 24 24"><path d="M4 12h14M14 6l6 6-6 6"/></svg>
-            </button>
-            <button type="button" data-shape="double-arrow" aria-label="Double arrow" title="Double arrow">
-              <svg viewBox="0 0 24 24"><path d="M7 6 1 12l6 6M17 6l6 6-6 6M3 12h18"/></svg>
-            </button>
-            <button type="button" data-shape="rect" class="active" aria-label="Rectangle" title="Rectangle">
-              <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="1"/></svg>
-            </button>
-            <button type="button" data-shape="roundrect" aria-label="Rounded rectangle" title="Rounded rectangle">
-              <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="5"/></svg>
-            </button>
-            <button type="button" data-shape="ellipse" aria-label="Circle" title="Circle">
-              <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8" ry="6"/></svg>
-            </button>
-            <button type="button" data-shape="triangle" aria-label="Triangle" title="Triangle">
-              <svg viewBox="0 0 24 24"><path d="M12 4 21 19H3Z"/></svg>
-            </button>
-            <button type="button" data-shape="diamond" aria-label="Diamond" title="Diamond">
-              <svg viewBox="0 0 24 24"><path d="M12 3 21 12 12 21 3 12Z"/></svg>
-            </button>
-            <button type="button" data-shape="pentagon" aria-label="Pentagon" title="Pentagon">
-              <svg viewBox="0 0 24 24"><path d="M12 3 21 10l-3.5 11h-11L3 10Z"/></svg>
-            </button>
-            <button type="button" data-shape="hexagon" aria-label="Hexagon" title="Hexagon">
-              <svg viewBox="0 0 24 24"><path d="M7 4h10l5 8-5 8H7L2 12Z"/></svg>
-            </button>
-            <button type="button" data-shape="star" aria-label="Star" title="Star">
-              <svg viewBox="0 0 24 24"><path d="M12 3 14.8 9.2 21.5 10l-4.7 4.6L18 21l-6-3.2L6 21l1.2-6.4L2.5 10l6.7-.8Z"/></svg>
-            </button>
-            <button type="button" data-shape="plus" aria-label="Plus" title="Plus">
-              <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-            </button>
-            <button type="button" data-shape="minus" aria-label="Minus" title="Minus">
-              <svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg>
-            </button>
-            <button type="button" data-shape="cross" aria-label="Cross" title="Cross">
-              <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
-            </button>
-            <button type="button" data-shape="heart" aria-label="Heart" title="Heart">
-              <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5.5-7 10-7 10Z"/></svg>
-            </button>
-            <button type="button" data-shape="cloud" aria-label="Cloud" title="Cloud">
-              <svg viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 1-7.9A6 6 0 0 0 7.2 9 4 4 0 0 0 7 18Z"/></svg>
-            </button>
-            <button type="button" data-shape="lightning" aria-label="Lightning" title="Lightning">
-              <svg viewBox="0 0 24 24"><path d="M13 2 6 13h6l-1 9 8-12h-6Z"/></svg>
-            </button>
-            <button type="button" data-shape="speech" aria-label="Speech bubble" title="Speech bubble">
-              <svg viewBox="0 0 24 24"><path d="M5 5h14v10H9l-4 4V5Z"/></svg>
-            </button>
-            <button type="button" data-shape="chevron" aria-label="Chevron" title="Chevron">
-              <svg viewBox="0 0 24 24"><path d="m6 6 8 6-8 6"/></svg>
-            </button>
-            <button type="button" data-shape="parallelogram" aria-label="Parallelogram" title="Parallelogram">
-              <svg viewBox="0 0 24 24"><path d="M7 6h14L17 18H3Z"/></svg>
-            </button>
-            <button type="button" data-shape="trapezoid" aria-label="Trapezoid" title="Trapezoid">
-              <svg viewBox="0 0 24 24"><path d="M7 6h10l4 12H3Z"/></svg>
-            </button>
-            <button type="button" data-shape="brace" aria-label="Brace" title="Brace">
-              <svg viewBox="0 0 24 24"><path d="M15 4c-4 0-4 4-8 4 4 0 4 4 8 4s4 4 8 4c-4 0-4 4-8 4"/></svg>
-            </button>
-            <button type="button" data-shape="house" aria-label="House" title="House">
-              <svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8"/><path d="M6 10v10h12V10"/></svg>
-            </button>
-            <button type="button" data-shape="person" aria-label="Person" title="Person">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/></svg>
-            </button>
           </div>
         </div>
 
@@ -435,88 +234,24 @@
           <button class="zoom-btn" id="zoomOutBtn" type="button" aria-label="Zoom out" title="Zoom out">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>
           </button>
-          <span class="zoom-level" id="coords" aria-live="polite">100%</span>
+          <span class="zoom-level" id="coords" aria-live="polite" title="Click to toggle 35% and 100% zoom" style="cursor:pointer">35%</span>
           <button class="zoom-btn" id="zoomInBtn" type="button" aria-label="Zoom in" title="Zoom in">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
           </button>
-          <button class="zoom-btn zoom-fit-btn" id="fitCanvasBtn" type="button" aria-label="Fit canvas" title="Fit canvas">
+          <button class="zoom-btn zoom-fit-btn" id="fitCanvasBtn" type="button" aria-label="Fit canvas (35%)" title="Fit canvas (35%)">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
           </button>
         </div>
 
-        <!-- BOTTOM FOOTER STATUS -->
-        <footer class="canvas-footer">
-          <span class="footer-tip">AI drafts: move the whole group or adjust, accept, and discard items independently</span>
-        </footer>
-      </div>
-
-      <!-- ═══ TALK MODE WORKSPACE (Rich, breathable, structured story webpage) ═══ -->
-      <div id="talkModeWorkspace" class="talk-mode-workspace">
-        <div class="talk-scroll-area" id="talkScrollArea">
-          <div class="talk-container">
-            <!-- Dynamic Feed of Structured Lesson Turns -->
-            <main class="talk-feed" id="talkFeed">
-              <!-- Rendered dynamically -->
-            </main>
-          </div>
-        </div>
-
-        <!-- Sticky Bottom Talk Bar in Talk Mode -->
-        <footer class="talk-bottom-bar" id="talkBottomBar">
-          <div class="talk-bar-container">
-            <button id="talkModeMicBtn" class="talk-mic-btn" type="button" aria-label="Tap to talk">
-              <svg class="talk-mic-glyph" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-            </button>
-            <form id="talkModeForm" class="talk-input-form">
-              <textarea id="talkModeTextInput" class="talk-input-field" rows="1" placeholder="Ask a question or share a thought…" autocomplete="off" enterkeyhint="send"></textarea>
-              <button id="talkModeSendBtn" class="talk-send-action-btn" type="submit" aria-label="Send">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-              </button>
-            </form>
-          </div>
-        </footer>
-      </div>
-
-      <div id="simModeWorkspace" class="sim-mode-workspace" hidden>
-        <div class="talk-scroll-area sim-scroll-area" id="simScrollArea">
-          <div class="talk-container">
-            <main class="sim-feed" id="simFeed">
-              <p class="sim-feed-status">Loading interactives…</p>
-            </main>
-          </div>
-        </div>
-      </div>
+      </div><!-- /canvas-workspace -->
 
     </div><!-- /center-area -->
 
   </main><!-- /app-shell -->
 
   <!-- ═══════════════════════════════════════════ -->
-  <!-- OVERLAYS / MODALS (always outside app-shell) -->
+  <!-- OVERLAYS / MODALS                           -->
   <!-- ═══════════════════════════════════════════ -->
-
-  <div id="talkWait" class="talk-wait-overlay" hidden aria-live="polite"></div>
-
-  <div id="talkPlayground" class="talk-playground" hidden>
-    <div class="talk-playground-bar">
-      <button type="button" id="talkPlaygroundClose" class="talk-playground-close">Done</button>
-      <span id="talkPlaygroundTitle" class="talk-playground-title">Playground</span>
-      <button type="button" id="talkPlaygroundExpand" class="talk-playground-expand" aria-label="Go full screen" title="Go full screen">
-        <span class="talk-playground-expand-label">Full screen</span>
-        <svg class="talk-playground-expand-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
-      </button>
-    </div>
-    <div class="talk-playground-scale">
-    <div id="talkPlaygroundScroll" class="talk-playground-scroll">
-      <header id="talkPlaygroundHeader" class="talk-playground-header" hidden>
-        <h2 id="talkPlaygroundHeading" class="talk-playground-heading"></h2>
-        <div id="talkPlaygroundBadges" class="talk-playground-badges"></div>
-      </header>
-      <div id="talkPlaygroundStage" class="talk-playground-stage"></div>
-      <div id="talkPlaygroundNotes" class="talk-playground-notes"></div>
-    </div>
-    </div>
-  </div>
 
   <div id="confirmModalLayer" class="confirm-modal-layer" hidden aria-hidden="true">
     <div id="confirmModalBackdrop" class="confirm-modal-backdrop"></div>
@@ -536,15 +271,15 @@
   <div id="historyBackdrop" class="history-backdrop" hidden></div>
   <aside id="historyPanel" class="history-panel" aria-hidden="true" aria-labelledby="historyTitle">
     <header>
-      <div><span class="history-kicker">Lumi6</span><h2 id="historyTitle">Canvas history</h2></div>
+      <div><h2 id="historyTitle">Canvas history</h2></div>
       <button id="historyClose" type="button" aria-label="Close history" title="Close history">×</button>
     </header>
-    <p>Stores confirmed canvas content only. Unconfirmed AI drafts are excluded.</p>
+    <p>Stores confirmed canvas content.</p>
     <fieldset class="snapshot-location" aria-describedby="historyStorageDescription">
       <legend>Save location</legend>
       <div class="snapshot-location-options">
         <label><input type="radio" name="historyStorageLocation" value="device"><span>This device</span></label>
-        <label><input type="radio" name="historyStorageLocation" value="server"><span>Lumi6 server</span></label>
+        <label><input type="radio" name="historyStorageLocation" value="server"><span>Atlas server</span></label>
       </div>
       <p id="historyStorageDescription" class="snapshot-location-description"></p>
     </fieldset>
@@ -561,16 +296,16 @@
   <dialog id="newCanvasDialog" class="new-canvas-dialog" aria-labelledby="newCanvasTitle">
     <form method="dialog">
       <header>
-        <div><span class="history-kicker">Lumi6</span><h2 id="newCanvasTitle">Start a new canvas?</h2></div>
+        <h2 id="newCanvasTitle">Start a new board?</h2>
         <button id="newCanvasClose" class="new-canvas-close" type="button" aria-label="Cancel" title="Cancel">×</button>
       </header>
-      <p>Save confirmed content before starting over. Unconfirmed AI drafts are not included.</p>
+      <p>Save this board first, or start with a clean one.</p>
       <p id="currentSnapshotLabel" class="current-snapshot"></p>
       <fieldset class="snapshot-location" aria-describedby="newCanvasStorageDescription">
         <legend>Save location</legend>
         <div class="snapshot-location-options">
           <label><input type="radio" name="newCanvasStorageLocation" value="device"><span>This device</span></label>
-          <label><input type="radio" name="newCanvasStorageLocation" value="server"><span>Lumi6 server</span></label>
+          <label><input type="radio" name="newCanvasStorageLocation" value="server"><span>Atlas server</span></label>
         </div>
         <p id="newCanvasStorageDescription" class="snapshot-location-description"></p>
       </fieldset>
@@ -580,8 +315,8 @@
       <div class="new-canvas-actions">
         <button id="newCanvasCancel" type="button">Cancel</button>
         <button id="newDiscard" class="new-canvas-discard" type="button">Don't save</button>
-        <button id="newSaveCopy" class="new-canvas-primary" type="button">Save as new</button>
-        <button id="newOverwrite" type="button">Overwrite current</button>
+        <button id="newSaveCopy" class="new-canvas-primary" type="button">Save & start new</button>
+        <button id="newOverwrite" type="button">Replace this one</button>
       </div>
     </form>
   </dialog>
@@ -610,11 +345,6 @@
     </form>
   </dialog>
 
-  <section id="debugPanel" hidden>
-    <div><strong>Lumi6 debug</strong><span id="debugRequest">request: -</span></div>
-    <ol id="debugEvents"></ol>
-  </section>
-
   <!-- Settings Panel -->
   <div id="settingsLayer" class="settings-layer" hidden aria-hidden="true">
     <div id="settingsBackdrop" class="settings-backdrop"></div>
@@ -624,96 +354,16 @@
         <button id="settingsClose" class="settings-close" type="button" aria-label="Close settings" title="Close settings">×</button>
       </header>
       <div class="settings-scroll">
-        <section class="settings-group" aria-labelledby="settingsAiHeading">
-          <h3 id="settingsAiHeading">AI</h3>
-          <div class="settings-row">
-            <span id="settingsAutoLabel">Auto AI</span>
-            <button id="settingsAutoToggle" class="settings-switch on" type="button" role="switch" aria-checked="true" aria-labelledby="settingsAutoLabel"><span class="settings-switch-thumb" aria-hidden="true"></span></button>
-          </div>
+        <section class="settings-group" aria-labelledby="settingsGeneralHeading">
+          <h3 id="settingsGeneralHeading">Canvas</h3>
           <label class="settings-row" for="aiFont">
-            <span>AI font</span>
-            <select id="aiFont" aria-label="AI font">
+            <span>Text font</span>
+            <select id="aiFont" aria-label="Text font">
               <option value='"Patrick Hand", "Segoe Print", "Comic Sans MS", cursive' selected>Handwritten</option>
-              <option value='"Lora", Georgia, "Times New Roman", serif'>Storybook (Lora)</option>
+              <option value='"Lora", Georgia, "Times New Roman", serif'>Classic Serif</option>
             </select>
           </label>
         </section>
-        <section class="settings-group" aria-labelledby="settingsSummonHeading">
-          <h3 id="settingsSummonHeading">Thinking indicator</h3>
-          <div class="settings-row">
-            <span id="summonToggleLabel">Show while AI thinks</span>
-            <button id="summonToggle" class="settings-switch on" type="button" role="switch" aria-checked="true" aria-labelledby="summonToggleLabel"><span class="settings-switch-thumb" aria-hidden="true"></span></button>
-          </div>
-          <p class="settings-note">A changing mathematical form and quiet text appear while each request runs.</p>
-        </section>
-        <section class="settings-group" aria-labelledby="settingsHelpHeading">
-          <h3 id="settingsHelpHeading">Help &amp; about</h3>
-          <div class="settings-actions">
-            <button id="settingsTourBtn" type="button">Feature tour</button>
-            <button id="settingsChangelogBtn" type="button">What's new</button>
-          </div>
-          <div class="settings-links">
-            <a href="https://github.com/iVectorFlux/lumi6primer/releases/latest" target="_blank" rel="noopener noreferrer">Download for macOS</a>
-            <a href="https://github.com/iVectorFlux/lumi6primer/releases/latest" target="_blank" rel="noopener noreferrer">Download for Windows</a>
-            <a href="https://github.com/iVectorFlux/lumi6primer" target="_blank" rel="noopener noreferrer">GitHub repository</a>
-          </div>
-        </section>
-      </div>
-    </section>
-  </div>
-
-  <!-- Tour -->
-  <div id="tourLayer" class="tour-layer" hidden aria-hidden="true">
-    <div id="tourHighlight" class="tour-highlight" aria-hidden="true"></div>
-    <section id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle" aria-describedby="tourBody" tabindex="-1">
-      <span id="tourArrow" class="tour-arrow" aria-hidden="true"></span>
-      <div class="tour-card-scroll">
-        <header class="tour-card-header">
-          <span class="tour-badge">Quick tour</span>
-          <span id="tourProgress" class="tour-progress" aria-live="polite"></span>
-          <button id="tourSkip" class="tour-skip" type="button">Skip tour</button>
-        </header>
-        <div id="tourProgressTrack" class="tour-progress-track" role="progressbar" aria-label="Tour progress" aria-valuemin="1" aria-valuemax="10" aria-valuenow="1"><span id="tourProgressBar"></span></div>
-        <h2 id="tourTitle" tabindex="-1"></h2>
-        <p id="tourBody"></p>
-        <footer class="tour-actions">
-          <button id="tourBack" type="button">Back</button>
-          <button id="tourNext" class="tour-primary" type="button">Next</button>
-        </footer>
-      </div>
-    </section>
-  </div>
-
-  <!-- Changelog -->
-  <div id="changelogLayer" class="changelog-layer" hidden aria-hidden="true">
-    <section id="changelogDialog" class="changelog-dialog" role="dialog" aria-modal="true" aria-label="Lumi6 release notes" aria-labelledby="changelogTitle" aria-describedby="changelogIntro" tabindex="-1">
-      <header class="changelog-header">
-        <div class="changelog-heading">
-          <span class="changelog-badge">What's new</span>
-          <span class="changelog-version">0.8.0</span>
-        </div>
-        <button id="changelogClose" class="changelog-close" type="button" aria-label="Close release notes" title="Close release notes">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
-        </button>
-      </header>
-      <div class="changelog-scroll">
-        <h2 id="changelogTitle">Professional diagrams, editable source, and precise refinement</h2>
-        <p id="changelogIntro" class="changelog-intro">Version 0.8.0 expands Lumi6 from flowcharts into professional engineering, scientific, software, and business diagrams.</p>
-        <div class="changelog-demo">
-          <img src="https://github.com/iVectorFlux/lumi6primer/releases/download/v0.1.0/lumi6_plugins.webp" alt="ATLAS professional diagrams demo" loading="eager" decoding="async">
-        </div>
-        <p class="changelog-plugin-note">Professional Diagrams is on by default. You can turn it off at any time from Plugins.</p>
-        <section class="changelog-release" aria-labelledby="changelogCurrentVersion">
-          <h3 id="changelogCurrentVersion">0.8.0</h3>
-          <ul>
-            <li>Professional Diagrams chooses an appropriate editable domain format, renders supported formats locally, and preserves copyable professional source for specialized HTML diagrams.</li>
-            <li>Draw or describe the professional diagram you need; Lumi6 chooses a suitable format and returns it as a canvas widget.</li>
-            <li>Plugin-returned widgets can be refined directly: draw the requested changes over the widget with the Pen, then click the Refine button that appears.</li>
-          </ul>
-        </section>
-      </div>
-      <div class="changelog-actions">
-        <button id="changelogDone" type="button">Got it</button>
       </div>
     </section>
   </div>
@@ -723,7 +373,7 @@
     <div class="auth-modal-content">
       <header class="auth-modal-header">
         <div class="auth-modal-title">
-          <img src="lumi6-mark.png" alt="Lumi6">
+          <img src="lumi6-mark.png" alt="Atlas">
           <h2>Sign in</h2>
         </div>
         <button id="authModalClose" class="auth-close-btn" type="button" aria-label="Close Auth Modal">×</button>
@@ -743,6 +393,7 @@
     </div>
   </div>
 
+  <!-- Onboarding Modal -->
   <div id="lumi6Onboard" class="lumi6-onboard" hidden>
     <section class="onboard-card" aria-labelledby="onboardTitle">
       <div id="lumi6OnboardBody"></div>
@@ -750,6 +401,7 @@
     </section>
   </div>
 
+  <!-- User Details Profile Panel -->
   <div id="lumi6ProfilePanel" class="lumi6-onboard" hidden>
     <section class="onboard-card profile-card" aria-labelledby="profileTitle">
       <div id="lumi6ProfileBody"></div>
@@ -760,15 +412,15 @@
   <div id="shareModal" class="share-modal" hidden>
     <div class="share-card">
       <div class="share-header">
-        <h3>Share or Save Lesson</h3>
+        <h3>Share</h3>
         <button id="closeShareModal" type="button" class="close-share-btn" aria-label="Close">&times;</button>
       </div>
       <div class="share-body">
-        <p class="share-label">Save your complete lesson as a PDF or share it directly via WhatsApp.</p>
+        <p class="share-label">Save an image or share board link.</p>
         <div class="share-actions-grid">
           <button id="sharePdfBtn" type="button" class="share-action-btn">
             <svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-            <span>Download PDF</span>
+            <span>Download PNG</span>
           </button>
           <button id="shareWhatsAppBtn" type="button" class="share-action-btn">
             <svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
@@ -779,75 +431,101 @@
     </div>
   </div>
 
-  <!-- Hidden stubs required by app.js engine (not shown in UI) -->
+  <!-- Hidden stubs required by board.js engine for backward-compatibility -->
   <div hidden aria-hidden="true" style="display:none!important" id="_legacyStubs">
-    <button id="debugBtn" type="button" hidden></button>
+    <div id="aiEmbodiment" class="ai-embodiment" data-theme="studio">
+      <button id="aiOrb" class="ai-orb" type="button"></button>
+      <div id="aiRadial" class="ai-radial"></div>
+    </div>
+    <div id="aiToolsSection">
+      <button id="auto"></button>
+      <div id="autoDelayPopover">
+        <input id="autoDelayRange" type="range" value="5">
+        <span id="autoDelayValue">5 s</span>
+      </div>
+      <button id="aiEffortButton"></button>
+      <div id="effortPopover">
+        <div id="effortOptions"></div>
+      </div>
+    </div>
+    <div id="aiStatusArea">
+      <div id="status"></div>
+      <div id="batchActions">
+        <button id="rejectBatch"></button>
+        <button id="acceptBatch"></button>
+      </div>
+    </div>
+    <button id="selectionTypesetBtn" type="button"></button>
+    <button id="selectionVisualizeBtn" type="button"></button>
+    <button id="debugBtn" type="button"></button>
     <select id="theme" hidden aria-hidden="true">
       <option value="studio" selected>Studio</option>
     </select>
-    <button id="gridToggle" type="button" aria-pressed="false" aria-label="Toggle grid" data-mode="grid" class="icon-button"></button>
-    <!-- Fullscreen button (wired through JS — hidden from new UI) -->
-    <button id="fullscreenBtn" type="button" aria-pressed="false" aria-label="Full screen"></button>
-    <!-- Clipboard copy button -->
-    <button id="clipboardCopyBtn" type="button" hidden></button>
-    <!-- Tagline element (updated by i18n / theme system) -->
+    <button id="gridToggle" type="button"></button>
+    <button id="fullscreenBtn" type="button"></button>
+    <button id="clipboardCopyBtn" type="button"></button>
     <p data-i18n="tagline"></p>
-    <!-- Language toggle buttons -->
-    <div class="language-toggle" aria-label="Language">
-      <button type="button" data-lang="en" aria-pressed="true">EN</button>
-      <button type="button" data-lang="hi" aria-pressed="false">हि</button>
-    </div>
-    <!-- Old brand/header copy -->
-    <header class="topbar">
-      <div class="brand">
-        <a class="sigil" href="#"><img src="lumi6-mark.png" alt="Lumi6"></a>
-        <div class="brand-copy">
-          <h1><strong>Lumi6</strong></h1>
-          <p data-i18n="tagline"></p>
-        </div>
-      </div>
-    </header>
-    <!-- Batch actions wired in old location -->
-    <div class="batch-actions"></div>
+    <button id="settingsTourBtn" type="button"></button>
+    <button id="settingsChangelogBtn" type="button"></button>
+    <button id="settingsAutoToggle" type="button"></button>
+    <button id="summonToggle" type="button"></button>
   </div>
 
-
-  <!-- Canvas engine libs → whiteboard app → kid tutor UI (load once, in order) -->
-  <script src="js/canvas/draw.js?v=20260904"></script>
-  <script src="js/canvas/selection.js?v=20260930"></script>
-  <script src="js/canvas/mixed-text.js?v=20260904"></script>
-  <script src="js/canvas/animation.js?v=20260904"></script>
-  <script src="js/canvas/summon.js?v=20260904"></script>
-  <script src="js/lib/lottie.min.js?v=20260967"></script>
-  <script>window.lottie = window.lottie || window.bodymovin;</script>
-  <script src="js/tutor/lumi-wait-data.js?v=20260967"></script>
-  <script src="js/tutor/lumi-wait.js?v=20260967"></script>
-  <script src="js/canvas/app.js?v=20260967"></script>
-  <script src="js/tutor/lumi6-canvas-adapter.js?v=20260904"></script>
-  <script src="js/tutor/primer-turn.js?v=20260967"></script>
-  <script src="js/tutor/primer-voice.js?v=20260967"></script>
-  <script src="js/tutor/lesson-pdf.js?v=20260967"></script>
-  <script src="js/tutor/lumi6-onboard.js?v=20260904"></script>
-  <script src="js/auth/supabase-auth.js?v=20260904"></script>
+  <!-- Client JavaScript -->
+  <script src="js/auth/supabase-auth.js"></script>
+  <script src="js/auth/onboard.js"></script>
+  <script src="js/board.js?v=20260929_v5"></script>
   <script>
-    // Zoom buttons
-    document.getElementById('zoomOutBtn')?.addEventListener('click', () => {
-      const vp = document.getElementById('viewport');
-      if (vp) vp.dispatchEvent(new WheelEvent('wheel', { deltaY: 120, ctrlKey: true, bubbles: true }));
-    });
-    document.getElementById('zoomInBtn')?.addEventListener('click', () => {
-      const vp = document.getElementById('viewport');
-      if (vp) vp.dispatchEvent(new WheelEvent('wheel', { deltaY: -120, ctrlKey: true, bubbles: true }));
-    });
-    document.getElementById('fitCanvasBtn')?.addEventListener('click', () => {
-      document.getElementById('fullscreenBtn')?.click();
-    });
-    (function () {
-      if (localStorage.getItem("primer-sidebar-v") !== "2") {
-        localStorage.setItem("primer-sidebar-v", "2");
-        localStorage.setItem("primer-sidebar-collapsed", "0");
+    // Direct zoom controls
+    function triggerZoom(direction) {
+      if (typeof window.zoomCanvasAt === 'function') {
+        const vp = document.getElementById('viewport');
+        const rect = vp ? vp.getBoundingClientRect() : { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
+        window.zoomCanvasAt(rect.left + rect.width / 2, rect.top + rect.height / 2, direction > 0 ? -120 : 120);
       }
-      const collapsed = localStorage.getItem("primer-sidebar-collapsed") === "1";
+    }
+    document.getElementById('zoomOutBtn')?.addEventListener('click', () => triggerZoom(-1));
+    document.getElementById('zoomInBtn')?.addEventListener('click', () => triggerZoom(1));
+    document.getElementById('fitCanvasBtn')?.addEventListener('click', () => {
+      if (typeof window.setCanvasZoom === 'function') {
+        window.setCanvasZoom(0.35);
+      }
+    });
+    document.getElementById('coords')?.addEventListener('click', () => {
+      if (typeof window.setCanvasZoom === 'function' && window.lumi6BoardState) {
+        const cur = window.lumi6BoardState.scale;
+        const target = Math.abs(cur - 0.35) < 0.05 ? 1.0 : 0.35;
+        window.setCanvasZoom(target);
+      }
+    });
+
+    // Share modal bindings
+    document.getElementById('shareCanvasBtn')?.addEventListener('click', () => {
+      const modal = document.getElementById('shareModal');
+      if (modal) modal.hidden = false;
+    });
+    document.getElementById('closeShareModal')?.addEventListener('click', () => {
+      const modal = document.getElementById('shareModal');
+      if (modal) modal.hidden = true;
+    });
+    document.getElementById('sharePdfBtn')?.addEventListener('click', () => {
+      document.getElementById('exportPngBtn')?.click();
+      const modal = document.getElementById('shareModal');
+      if (modal) modal.hidden = true;
+    });
+    document.getElementById('shareWhatsAppBtn')?.addEventListener('click', () => {
+      const url = encodeURIComponent(window.location.href);
+      const text = encodeURIComponent("Check out this board on Atlas: ");
+      window.open(`https://api.whatsapp.com/send?text=${text}${url}`, "_blank");
+    });
+
+    // Sidebar collapse & responsive toggle
+    (function () {
+      if (localStorage.getItem("atlas-sidebar-v") !== "2") {
+        localStorage.setItem("atlas-sidebar-v", "2");
+        localStorage.setItem("atlas-sidebar-collapsed", "0");
+      }
+      const collapsed = localStorage.getItem("atlas-sidebar-collapsed") === "1";
       if (collapsed) document.body.classList.add("sidebar-collapsed");
       const menuBtn = document.getElementById("mobileMenuBtn");
       const backdrop = document.getElementById("sidebarBackdrop");
@@ -859,7 +537,7 @@
       };
       const setCollapsed = (on) => {
         document.body.classList.toggle("sidebar-collapsed", on);
-        localStorage.setItem("primer-sidebar-collapsed", on ? "1" : "0");
+        localStorage.setItem("atlas-sidebar-collapsed", on ? "1" : "0");
         const btn = document.getElementById("sidebarCollapseBtn");
         if (btn) {
           btn.setAttribute("aria-label", on ? "Open sidebar" : "Collapse sidebar");

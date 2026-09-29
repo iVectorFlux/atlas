@@ -1,49 +1,26 @@
 {
-  "name": "lumi6",
-  "version": "0.8.0",
-  "description": "Think with AI on a shared canvas for handwriting, equations, and diagrams",
-  "productName": "Lumi6",
+  "name": "atlas",
+  "version": "1.0.0",
+  "description": "Atlas - Handwritten Whiteboard Canvas with User Onboarding",
+  "productName": "Atlas",
   "main": "server.js",
   "license": "UNLICENSED",
   "private": true,
-  "keywords": [
-    "canvas",
-    "handwriting",
-    "ai",
-    "whiteboard",
-    "math",
-    "lumi6"
-  ],
-  "files": [
-    "server.js",
-    "src/",
-    "scripts/build-client.js",
-    "content/",
-    "public/",
-    "README.md",
-    "LICENSE"
-  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iVectorFlux/lumi6primer.git"
+    "url": "git+https://github.com/iVectorFlux/atlas.git"
   },
-  "homepage": "https://github.com/iVectorFlux/lumi6primer#readme",
+  "homepage": "https://github.com/iVectorFlux/atlas#readme",
   "bugs": {
-    "url": "https://github.com/iVectorFlux/lumi6primer/issues"
+    "url": "https://github.com/iVectorFlux/atlas/issues"
   },
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "build:client": "node scripts/build-client.js",
-    "check:client": "node scripts/build-client.js --check",
-    "prepack": "npm run build:client",
-    "seed:interactives": "node scripts/seed-interactives.js",
-    "check": "npm run check:client && node --check server.js && node --check scripts/build-client.js && node --check src/server/main.js && node --check src/server/api-config.js && node --check src/server/typeset.js && node --check src/providers/kimi-cli.js && node --check src/providers/kimi-acp.js && node --check src/providers/codex-cli.js && node --check src/providers/claude-cli.js && node --check public/js/canvas/draw.js && node --check public/js/canvas/selection.js && node --check public/js/canvas/mixed-text.js && node --check public/js/canvas/animation.js && node --check public/js/canvas/summon.js && node --check public/js/tutor/primer-turn.js && node --check public/js/tutor/primer-voice.js && node --check public/js/canvas/app.js"
+    "build": "node scripts/build-web.js",
+    "check": "node --check server.js && node --check scripts/build-web.js && node --check src/server/main.js"
   },
   "engines": {
     "node": ">=20.3.0"
-  },
-  "dependencies": {
-    "sharp": "^0.34.5"
   }
 }
