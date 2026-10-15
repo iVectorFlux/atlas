@@ -1,0 +1,108 @@
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+@theme {
+  --font-display: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-pill: 9999px;
+}
+
+:root,
+[data-theme="dark"] {
+  --bg-main: #141416;
+  --bg-surface: #1C1C20;
+  --bg-elevated: #222226;
+  --text-primary: #EDEDED;
+  --text-secondary: #8E8E93;
+  --border-line: rgba(255, 255, 255, 0.08);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.14);
+  --katex-color: #EDEDED;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg-main: #F7F7F8;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #F1F1F3;
+  --text-primary: #18181B;
+  --text-secondary: #71717A;
+  --border-line: rgba(0, 0, 0, 0.08);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.16);
+  --katex-color: #18181B;
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* KaTeX theme adjustments */
+.katex {
+  color: var(--katex-color) !important;
+}
+.katex-html {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* ─── Living AI Pointer Animations ─── */
+
+@keyframes ai-pointer-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+@keyframes ai-pointer-bubble-in {
+  0% { opacity: 0; transform: translateY(4px) scale(0.92); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes ai-pointer-highlight-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.3); }
+  50% { box-shadow: 0 0 0 12px rgba(59, 130, 246, 0); }
+}
+
+/* Tutor cursor trail fade */
+@keyframes ai-pointer-trail {
+  0% { opacity: 0.5; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.3); }
+}
+
+/* Skip hint fade-in */
+@keyframes tutor-skip-hint {
+  0% { opacity: 0; transform: translateY(6px); }
+  40% { opacity: 1; transform: translateY(0); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-2px); }
+}
+

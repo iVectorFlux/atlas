@@ -1,26 +1,16 @@
 {
-  "name": "atlas",
-  "version": "1.0.0",
-  "description": "Atlas - Handwritten Whiteboard Canvas with User Onboarding",
-  "productName": "Atlas",
-  "main": "server.js",
-  "license": "UNLICENSED",
+  "name": "zawvee-platform",
+  "version": "2.0.0",
+  "description": "Zawvee — Full-stack AI Learning Platform (Next.js Frontend + FastAPI Backend)",
   "private": true,
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/iVectorFlux/atlas.git"
-  },
-  "homepage": "https://github.com/iVectorFlux/atlas#readme",
-  "bugs": {
-    "url": "https://github.com/iVectorFlux/atlas/issues"
-  },
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
-    "build": "node scripts/build-web.js",
-    "check": "node --check server.js && node --check scripts/build-web.js && node --check src/server/main.js"
+    "dev": "concurrently -k -n \"backend,frontend\" -c \"blue.bold,magenta.bold\" \"npm run backend\" \"npm run frontend\"",
+    "frontend": "npm --prefix frontend run dev",
+    "backend": ".venv/bin/uvicorn backend.app:app --host 127.0.0.1 --port 8000 --reload",
+    "build": "npm --prefix frontend run build",
+    "check": "npm --prefix frontend run check"
   },
-  "engines": {
-    "node": ">=20.3.0"
+  "devDependencies": {
+    "concurrently": "^10.0.6"
   }
 }

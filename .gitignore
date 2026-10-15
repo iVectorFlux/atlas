@@ -1,35 +1,37 @@
-.env
-*.env
-.env.cli
-.env.*.local
-!.env.example
+# Dependencies
 node_modules/
-npm-debug.log*
-logs/
-debug_logs/
-.opencode/
-.req/
-scratch/
-test-results/
-playwright-report/
-coverage/
+/.pnp
+.pnp.js
+
+# Production / Next.js Build
+.next/
 out/
-output/
-release/
+build/
+dist/
+*.tsbuildinfo
+
+# Python Virtual Environment & Cache
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environment Variables
+.env
+.env*.local
+.env.production
+.env.staging
+
+# Local Runtime Data & Logs
+local/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System / Editor
 .DS_Store
 Thumbs.db
-local/*
-public/plugins/private/
-tools/mobile/android/
-tools/mobile/ios/
-
-# Local / IDE
-.cursor/
 .vscode/
-*.pem
-*.p12
-
-# Deploy artifacts
-.vercel/
-.aws-sam/
-dist/
+.idea/

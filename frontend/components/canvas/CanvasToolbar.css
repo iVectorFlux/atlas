@@ -1,0 +1,342 @@
+/* ══ Bencho Canvas Toolbar Stylesheet ═══════════════════════════════
+   Mapped to Zawvee Dark Aesthetic with concentric corners,
+   glass pane, lit rim, and animated selection pad.
+   ═════════════════════════════════════════════════════════════════ */
+
+.canvas-toolbar-container {
+  /* Design Tokens mapped to project's dark aesthetic */
+  --bar-gap: 3px;
+  --bar-pad: 4px;
+  --bar-slot: 36px;
+  --deck-r: 20px;
+  --depth: 1;
+  --g-blur: 20px;
+  --g-sat: 160%;
+  --g-bright: 100%;
+  --g-edge-far: 0.04;
+  --g-edge-hi: 0.18;
+  --g-edge-lo: 0.06;
+  --g-lift: 0.45;
+  --g-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 12px 36px -4px rgba(0, 0, 0, 0.7);
+  --g-spec: 0.12;
+  --ink: #F2F4F7;
+  --ink-rgb: 242, 244, 247;
+  --inlay: rgba(255, 255, 255, 0.08);
+  --nod-r: 20px;
+  --pane: rgba(24, 24, 28, 0.88);
+  --pane-edge: rgba(255, 255, 255, 0.10);
+  --pane-thumb: rgba(255, 255, 255, 0.12);
+  --pick: #EDEDED;
+  --pull: 0;
+  --shadow-rgb: 0, 0, 0;
+  --try-edge: rgba(255, 255, 255, 0.12);
+}
+
+/* ── glass navigation ──────────────────────────────────────
+   Same recipe as .gcard: 60% white, 2px frost, refraction,
+   lit inner edge. Shapes differ, the material does not. */
+
+.gpane, .gnav, .gdock {
+  position: relative;
+  background: var(--pane);
+  -webkit-backdrop-filter:
+    blur(var(--g-blur, 16px)) saturate(var(--g-sat, 150%)) brightness(var(--g-bright, 100%));
+  backdrop-filter:
+    blur(var(--g-blur, 16px)) saturate(var(--g-sat, 150%)) brightness(var(--g-bright, 100%));
+  isolation: isolate;
+  color: var(--ink);
+  border: 1px solid var(--pane-edge);
+  box-shadow: var(--g-shadow);
+}
+
+.gpane::before, .gnav::before, .gdock::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ── 1 · canvas toolbar ──────────────────────────────────── */
+.bar-well {
+  position: relative;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bar-rail {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bar-gap);
+  padding: var(--bar-pad);
+  border-radius: var(--bar-r, 15px);
+  background: var(--pane);
+}
+
+.bar-tool {
+  position: relative;
+  width: var(--bar-slot);
+  height: var(--bar-slot);
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--bar-tool-r, 11px);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: color 200ms ease, background 200ms ease;
+  user-select: none;
+}
+
+.bar-tool:hover {
+  background: var(--inlay);
+}
+
+/* ── THE SELECTED PAD ARRIVES ───────────────────────────────
+   A pseudo-element can be scaled where the button cannot: the
+   button holds the glyph, and scaling it would take the icon
+   with it. So the pad is its own layer, opening from 0.72 on a
+   curve that goes just past 1. The glyph lifts a hair with it,
+   which is what ties the two together — 1.05, small enough to
+   be felt rather than watched. */
+.bar-tool::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: var(--pick);
+  opacity: 0;
+  transform: scale(0.72);
+  transition: opacity 140ms ease, transform 300ms cubic-bezier(0.3, 1.42, 0.4, 1);
+  pointer-events: none;
+}
+
+/* the mark rides over its own pad */
+.bar-tool > svg {
+  position: relative;
+  z-index: 1;
+  transition: transform 300ms cubic-bezier(0.3, 1.42, 0.4, 1);
+}
+
+.bar-tool[data-on="true"] {
+  color: #121214;
+}
+
+.bar-tool[data-on="true"]:hover {
+  background: transparent;
+}
+
+.bar-tool[data-on="true"]::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.bar-tool[data-on="true"] > svg {
+  transform: scale(1.05);
+}
+
+/* pressed, it yields before it lights */
+.bar-tool:active > svg {
+  transform: scale(0.92);
+  transition-duration: 90ms;
+}
+
+/* the shape slot carries its own notch */
+.bar-slot {
+  position: relative;
+  display: inline-flex;
+}
+
+.bar-notch {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* a corner wedge, the universal "there is more here" */
+.bar-notch::after {
+  content: "";
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  border-left: 5px solid transparent;
+  border-bottom: 5px solid var(--ink);
+  opacity: 0.5;
+  transition: opacity 160ms ease, transform 200ms cubic-bezier(0.28, 1.3, 0.36, 1);
+}
+
+.bar-notch:hover::after,
+.bar-notch[data-open="true"]::after {
+  opacity: 0.95;
+}
+
+/* on the light pad the wedge goes dark with the glyph */
+.bar-slot[data-on="true"] .bar-notch::after {
+  border-bottom-color: #121214;
+  opacity: 0.85;
+}
+
+.bar-notch[data-open="true"]::after {
+  transform: scale(1.3);
+}
+
+.bar-split {
+  width: 1px;
+  height: 20px;
+  margin: 0 4px;
+  background: rgba(var(--ink-rgb), 0.15);
+}
+
+/* the palette opens as a row above the bar, matching its shape */
+.bar-flyout {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  display: flex;
+  gap: 3px;
+  padding: 4px;
+  border-radius: var(--bar-r, 15px);
+  animation: bar-rise 300ms cubic-bezier(0.22, 1.14, 0.36, 1) both;
+  z-index: 50;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar-flyout {
+    animation-duration: 1ms;
+  }
+}
+
+@keyframes bar-rise {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(9px) scale(0.965);
+  }
+  55% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+/* Color & Size popover extensions */
+.bar-color-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  position: relative;
+  z-index: 1;
+}
+
+.bar-palette-flyout,
+.bar-size-flyout {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 14px;
+  animation: bar-rise 250ms cubic-bezier(0.22, 1.14, 0.36, 1) both;
+  z-index: 50;
+  white-space: nowrap;
+}
+
+.bar-size-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 8px;
+  min-width: 40px;
+  border-radius: 8px;
+  background: transparent;
+  border: 0;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  transition: all 150ms ease;
+  user-select: none;
+}
+
+.bar-size-btn:hover {
+  background: var(--inlay);
+}
+
+.bar-size-btn[data-selected="true"] {
+  background: var(--pick);
+  color: #121214;
+  font-weight: 600;
+}
+
+[data-theme="light"] .bar-size-btn[data-selected="true"] {
+  color: #FFFFFF;
+}
+
+
+.bar-palette-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 160ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.bar-palette-swatch:hover {
+  transform: scale(1.15);
+}
+.bar-palette-swatch[data-selected="true"] {
+  border-color: #ffffff;
+  transform: scale(1.2);
+  outline: 2px solid rgba(255, 255, 255, 0.25);
+  outline-offset: 1px;
+}
+
+/* ── Light Mode Token Overrides ────────────────────────── */
+[data-theme="light"] .canvas-toolbar-container {
+  --pane: rgba(255, 255, 255, 0.92);
+  --pane-edge: rgba(0, 0, 0, 0.08);
+  --pane-thumb: rgba(0, 0, 0, 0.08);
+  --ink: #18181B;
+  --ink-rgb: 24, 24, 27;
+  --inlay: rgba(0, 0, 0, 0.05);
+  --pick: #18181B;
+  --g-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 10px 28px -4px rgba(0, 0, 0, 0.10);
+}
+
+[data-theme="light"] .bar-tool[data-on="true"] {
+  color: #FFFFFF;
+}
+
+[data-theme="light"] .bar-slot[data-on="true"] .bar-notch::after {
+  border-bottom-color: #FFFFFF;
+}
+
+[data-theme="light"] .bar-color-dot {
+  border: 1.5px solid rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="light"] .bar-palette-swatch[data-selected="true"] {
+  border-color: #18181B;
+  outline: 2px solid rgba(0, 0, 0, 0.2);
+}
