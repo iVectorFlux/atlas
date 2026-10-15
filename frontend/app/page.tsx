@@ -28,20 +28,6 @@ import { CanvasWorkspace } from "@/components/canvas/CanvasWorkspace";
 import { TutorCanvasOverlay } from "@/components/canvas/TutorCanvasOverlay";
 import { textToStrokes, centerStrokes, getStrokesBoundingBox } from "@/lib/handwritingEngine";
 import {
-  createRightTriangleStrokes,
-  createFractionCircleStrokes,
-  createFractionBarStrokes,
-  createAtomModelStrokes,
-  createAnnotationStrokes,
-  createSlopeInterceptStrokes,
-  createNumberLineStrokes,
-  createCircleGeometryStrokes,
-  createWaveStrokes,
-  createParabolaStrokes,
-  createGravityOrbitStrokes,
-  createSpacetimeCurvatureStrokes,
-  createFaradayInductionStrokes,
-  createElectricCircuitStrokes,
   createDynamicSceneStrokesAndObjects,
   parseSvgToDynamicElements,
   cleanLatexFormula,
@@ -51,7 +37,14 @@ import {
   createArrayModelStrokes,
   createTenFrameStrokes,
   createTapeDiagramStrokes,
+  createRightTriangleStrokes,
+  createFractionCircleStrokes,
+  createFractionBarStrokes,
+  createSlopeInterceptStrokes,
+  createNumberLineStrokes,
+  createCircleGeometryStrokes,
 } from "@/lib/elementaryMathModels";
+import { createAnnotationStrokes } from "@/lib/drawingPrimitives";
 import { sceneManager } from "@/lib/sceneGraph/sceneManager";
 import { BoundingBox } from "@/lib/sceneGraph/types";
 import { computeBoundingBox, computePointsBoundingBox } from "@/lib/sceneGraph/layoutEngine";
@@ -1046,65 +1039,6 @@ export default function ZawveeApp() {
               diagStrokes = createCircleGeometryStrokes({
                 center: { x: boardCenterX, y: middleZoneY },
                 radius: op.payload.radius || 80,
-                textColor: theme === "light" ? "#18181B" : "#EDEDED",
-                pageId: targetPageId,
-              });
-            } else if (diag === "wave") {
-              diagStrokes = createWaveStrokes({
-                center: { x: boardCenterX, y: middleZoneY },
-                width: op.payload.width || 320,
-                amplitude: op.payload.amplitude || 45,
-                wavelength: op.payload.wavelength || 140,
-                textColor: theme === "light" ? "#18181B" : "#EDEDED",
-                pageId: targetPageId,
-              });
-            } else if (diag === "parabola") {
-              diagStrokes = createParabolaStrokes({
-                center: { x: boardCenterX, y: middleZoneY },
-                width: op.payload.width || 240,
-                height: op.payload.height || 180,
-                formulaLabel: op.payload.formulaLabel || "y = ax^2 + bx + c",
-                textColor: theme === "light" ? "#18181B" : "#EDEDED",
-                pageId: targetPageId,
-              });
-            } else if (diag === "atom") {
-              diagStrokes = createAtomModelStrokes({
-                center: { x: boardCenterX, y: middleZoneY },
-                elementName: op.payload.elementName || "Helium",
-                pageId: targetPageId,
-              });
-            } else if (diag === "gravity" || diag === "gravity_orbit" || diag === "orbit") {
-              diagStrokes = createGravityOrbitStrokes({
-                center: { x: boardCenterX, y: middleZoneY },
-                width: op.payload.width || 290,
-                height: op.payload.height || 170,
-                formulaLabel: op.payload.formulaLabel,
-                textColor: theme === "light" ? "#18181B" : "#EDEDED",
-                pageId: targetPageId,
-              });
-            } else if (diag === "spacetime" || diag === "spacetime_curvature" || diag === "relativity") {
-              diagStrokes = createSpacetimeCurvatureStrokes({
-                center: { x: boardCenterX, y: middleZoneY },
-                width: op.payload.width || 320,
-                height: op.payload.height || 180,
-                formulaLabel: op.payload.formulaLabel,
-                textColor: theme === "light" ? "#18181B" : "#EDEDED",
-                pageId: targetPageId,
-              });
-            } else if (diag === "faraday" || diag === "faraday_induction" || diag === "induction") {
-              diagStrokes = createFaradayInductionStrokes({
-                center: { x: boardCenterX, y: middleZoneY },
-                width: op.payload.width || 300,
-                formulaLabel: op.payload.formulaLabel,
-                textColor: theme === "light" ? "#18181B" : "#EDEDED",
-                pageId: targetPageId,
-              });
-            } else if (diag === "circuit" || diag === "electric_circuit" || diag === "ohms_law") {
-              diagStrokes = createElectricCircuitStrokes({
-                center: { x: boardCenterX, y: middleZoneY },
-                width: op.payload.width || 280,
-                height: op.payload.height || 160,
-                formulaLabel: op.payload.formulaLabel,
                 textColor: theme === "light" ? "#18181B" : "#EDEDED",
                 pageId: targetPageId,
               });
